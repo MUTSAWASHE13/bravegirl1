@@ -12,6 +12,21 @@
         body {
             font-family: 'Inter', sans-serif;
         }
+        /* Custom scrollbar for the cart for better aesthetics */
+        .cart-items-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .cart-items-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .cart-items-container::-webkit-scrollbar-thumb {
+            background: #e9a8b1;
+            border-radius: 10px;
+        }
+        .cart-items-container::-webkit-scrollbar-thumb:hover {
+            background: #e9a8b1;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-pink-50 to-white text-neutral-800">
@@ -23,11 +38,17 @@
             <div class="hidden md:flex space-x-8">
                 <a href="#" class="text-lg font-medium text-neutral-700 hover:text-pink-600 transition-colors duration-300 rounded-md p-2">Home</a>
                 <a href="#products" class="text-lg font-medium text-neutral-700 hover:text-pink-600 transition-colors duration-300 rounded-md p-2">Products</a>
-                
             </div>
             <!-- Mobile Menu Button (Hamburger) -->
             <button class="md:hidden text-neutral-700 hover:text-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded-md p-2">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+            <!-- Shopping Cart Icon -->
+            <button id="cart-icon" class="relative text-neutral-700 hover:text-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-500 rounded-md p-2 ml-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+                <span id="cart-count" class="absolute -top-1 -right-1 bg-pink-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
             </button>
         </nav>
     </header>
@@ -54,84 +75,149 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
             <!-- Product Card 1 -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out">
-                <img src="linerlip.jpeg" alt="BraveGirl Radiant Foundation" class="w-full h-64 object-cover">
+            <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out" data-product-id="1" data-name="Lip Liner" data-price="3.00">
+                <img src="linerlip.jpeg" alt="Lip Liner" class="w-full h-64 object-cover">
                 <div class="p-6">
                     <h3 class="text-2xl font-semibold text-neutral-900 mb-2">Lip Liner</h3>
-                    <p class="text-neutral-600 text-lg mb-4"> . </p>
-                    <div class="flex justify-between items-center">
+                    <p class="text-neutral-600 text-lg mb-4">Define your lips with precision and long-lasting color.</p>
+                    <div class="flex justify-between items-center mb-4">
                         <span class="text-pink-600 text-2xl font-bold">$3.00</span>
-                        <button class="bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-4 rounded-full transition-colors duration-300 shadow-md">Add to Cart</button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <label for="quantity-1" class="mr-2 text-neutral-700">Qty:</label>
+                            <input type="number" id="quantity-1" value="1" min="1" class="w-20 p-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400 quantity-input">
+                        </div>
+                        <button class="add-to-cart-btn bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-4 rounded-full transition-colors duration-300 shadow-md">Add to Cart</button>
                     </div>
                 </div>
             </div>
 
             <!-- Product Card 2 -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out">
-                <img src="lipbalm.jpeg" alt="BraveGirl Volumizing Mascara" class="w-full h-64 object-cover">
+            <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out" data-product-id="2" data-name="Lip Balm" data-price="5.00">
+                <img src="lipbalm.jpeg" alt="Lip Balm" class="w-full h-64 object-cover">
                 <div class="p-6">
                     <h3 class="text-2xl font-semibold text-neutral-900 mb-2">Lip Balm</h3>
-                    <p class="text-neutral-600 text-lg mb-4"> . </p>
-                    <div class="flex justify-between items-center">
+                    <p class="text-neutral-600 text-lg mb-4">Nourish and protect your lips with our hydrating formula.</p>
+                    <div class="flex justify-between items-center mb-4">
                         <span class="text-pink-600 text-2xl font-bold">$5.00</span>
-                        <button class="bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-4 rounded-full transition-colors duration-300 shadow-md">Add to Cart</button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <label for="quantity-2" class="mr-2 text-neutral-700">Qty:</label>
+                            <input type="number" id="quantity-2" value="1" min="1" class="w-20 p-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400 quantity-input">
+                        </div>
+                        <button class="add-to-cart-btn bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-4 rounded-full transition-colors duration-300 shadow-md">Add to Cart</button>
                     </div>
                 </div>
             </div>
 
             <!-- Product Card 3 -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out">
-                <img src="peachmallowgloss.jpeg" alt="BraveGirl Hydrating Lipstick" class="w-full h-64 object-cover">
+            <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out" data-product-id="3" data-name="Peach-mallow Gloss" data-price="5.00">
+                <img src="peachmallowgloss.jpeg" alt="Peach-mallow Gloss" class="w-full h-64 object-cover">
                 <div class="p-6">
                     <h3 class="text-2xl font-semibold text-neutral-900 mb-2">Peach-mallow Gloss</h3>
-                    <p class="text-neutral-600 text-lg mb-4"> .</p>
-                    <div class="flex justify-between items-center">
+                    <p class="text-neutral-600 text-lg mb-4">A luscious gloss for a sweet and vibrant pout.</p>
+                    <div class="flex justify-between items-center mb-4">
                         <span class="text-pink-600 text-2xl font-bold">$5.00</span>
-                        <button class="bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-4 rounded-full transition-colors duration-300 shadow-md">Add to Cart</button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <label for="quantity-3" class="mr-2 text-neutral-700">Qty:</label>
+                            <input type="number" id="quantity-3" value="1" min="1" class="w-20 p-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400 quantity-input">
+                        </div>
+                        <button class="add-to-cart-btn bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-4 rounded-full transition-colors duration-300 shadow-md">Add to Cart</button>
                     </div>
                 </div>
             </div>
             
             <!-- Product Card 4 -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out">
-                <img src="lipglazegloss.jpeg" alt="BraveGirl Radiant Foundation" class="w-full h-64 object-cover">
+            <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out" data-product-id="4" data-name="Lip Glaze Gloss" data-price="7.00">
+                <img src="lipglazegloss.jpeg" alt="Lip Glaze Gloss" class="w-full h-64 object-cover">
                 <div class="p-6">
-                    <h3 class="text-2xl font-semibold text-neutral-900 mb-2">Lip glaze gloss</h3>
-                    <p class="text-neutral-600 text-lg mb-4">.</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-pink-600 text-2xl font-bold">$7</span>
-                        <button class="bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-4 rounded-full transition-colors duration-300 shadow-md">Add to Cart</button>
+                    <h3 class="text-2xl font-semibold text-neutral-900 mb-2">Lip Glaze Gloss</h3>
+                    <p class="text-neutral-600 text-lg mb-4">Achieve a high-shine, long-lasting glaze for dazzling lips.</p>
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-pink-600 text-2xl font-bold">$7.00</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <label for="quantity-4" class="mr-2 text-neutral-700">Qty:</label>
+                            <input type="number" id="quantity-4" value="1" min="1" class="w-20 p-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400 quantity-input">
+                        </div>
+                        <button class="add-to-cart-btn bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-4 rounded-full transition-colors duration-300 shadow-md">Add to Cart</button>
                     </div>
                 </div>
             </div>
 
-                <!-- Product Card 5 -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out">
-                <img src="calmsmoothgloss.jpeg" alt="BraveGirl Radiant Foundation" class="w-full h-64 object-cover">
+            <!-- Product Card 5 -->
+            <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out" data-product-id="5" data-name="Calm Smooth Gloss" data-price="7.00">
+                <img src="calmsmoothgloss.jpeg" alt="Calm Smooth Gloss" class="w-full h-64 object-cover">
                 <div class="p-6">
                     <h3 class="text-2xl font-semibold text-neutral-900 mb-2">Calm Smooth Gloss</h3>
-                    <p class="text-neutral-600 text-lg mb-4"> . </p>
-                    <div class="flex justify-between items-center">
+                    <p class="text-neutral-600 text-lg mb-4">Experience serene smoothness with a touch of calming shine.</p>
+                    <div class="flex justify-between items-center mb-4">
                         <span class="text-pink-600 text-2xl font-bold">$7.00</span>
-                        <button class="bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-4 rounded-full transition-colors duration-300 shadow-md">Add to Cart</button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <label for="quantity-5" class="mr-2 text-neutral-700">Qty:</label>
+                            <input type="number" id="quantity-5" value="1" min="1" class="w-20 p-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400 quantity-input">
+                        </div>
+                        <button class="add-to-cart-btn bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-4 rounded-full transition-colors duration-300 shadow-md">Add to Cart</button>
                     </div>
                 </div>
             </div>
 
-                <!-- Product Card 6 -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out">
-                <img src="duolipkit.jpeg" alt="BraveGirl Volumizing Mascara" class="w-full h-64 object-cover">
+            <!-- Product Card 6 -->
+            <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out" data-product-id="6" data-name="Duo Lipkit: Soft Cookie" data-price="9.00">
+                <img src="duolipkit.jpeg" alt="Duo Lipkit: Soft Cookie" class="w-full h-64 object-cover">
                 <div class="p-6">
-                    <h3 class="text-2xl font-semibold text-neutral-900 mb-2">Duo Lipkit: soft cookie</h3>
-                    <p class="text-neutral-600 text-lg mb-4"> . </p>
-                    <div class="flex justify-between items-center">
+                    <h3 class="text-2xl font-semibold text-neutral-900 mb-2">Duo Lipkit: Soft Cookie</h3>
+                    <p class="text-neutral-600 text-lg mb-4">A perfect pairing for a complete and soft lip look.</p>
+                    <div class="flex justify-between items-center mb-4">
                         <span class="text-pink-600 text-2xl font-bold">$9.00</span>
-                        <button class="bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-4 rounded-full transition-colors duration-300 shadow-md">Add to Cart</button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <label for="quantity-6" class="mr-2 text-neutral-700">Qty:</label>
+                            <input type="number" id="quantity-6" value="1" min="1" class="w-20 p-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-400 quantity-input">
+                        </div>
+                        <button class="add-to-cart-btn bg-neutral-700 hover:bg-neutral-800 text-white font-medium py-2 px-4 rounded-full transition-colors duration-300 shadow-md">Add to Cart</button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col p-6">
+        <div class="flex justify-between items-center border-b pb-4 mb-4">
+            <h2 class="text-3xl font-bold text-pink-700">Your Cart</h2>
+            <button id="close-cart-btn" class="text-neutral-700 hover:text-pink-600 focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div id="cart-items" class="flex-grow overflow-y-auto cart-items-container pr-2">
+            <!-- Cart items will be rendered here by JavaScript -->
+            <p id="empty-cart-message" class="text-neutral-500 text-center py-8">Your cart is empty.</p>
+        </div>
+        <div class="border-t pt-4 mt-4">
+            <div class="flex justify-between items-center text-xl font-bold text-neutral-800 mb-4">
+                <span>Total:</span>
+                <span id="cart-total">$0.00</span>
+            </div>
+            <button id="checkout-btn" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-colors duration-300 ease-in-out">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- Message Box (for notifications) -->
+    <div id="message-box" class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-neutral-800 text-white px-6 py-3 rounded-full shadow-xl opacity-0 transition-opacity duration-300 z-[100]" style="pointer-events: none;">
+        Product added to cart!
+    </div>
+
 
     <!-- About Us Section -->
     <section id="about" class="bg-white py-16 px-6 md:px-12 rounded-xl m-4 shadow-xl">
@@ -141,7 +227,6 @@
                 BraveGirl is more than just a beauty brand; it's a movement. We believe that true beauty comes from within, and our products are crafted to enhance your natural glow, not mask it. Founded on principles of quality, ethics, and empowerment, we are committed to providing cruelty-free, high-performance beauty essentials that inspire confidence and celebrate individuality. Join us in embracing your unique beauty and radiating strength!
             </p>
         </div>
-        
     </section>
 
     <!-- Contact Section -->
@@ -151,32 +236,301 @@
         
         <p class="text-xl font-semibold text-neutral-700">Phone: +263785774135</p>
         <div class="mt-8 flex justify-center space-x-6">
-            <!-- WhatsApp Link -->
+            <!-- WhatsApp Link 1 -->
             <a href="https://wa.me/263788840493" target="_blank" class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out">
-    <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 0C5.373 0 0 5.373 0 12c0 3.535 1.402 6.732 3.656 9.055L0 24l4.904-1.29a11.95 11.95 0 007.096 2.308c6.627 0 12-5.373 12-12S18.627 0 12 0zm4.5 16.5c-.24-.096-.947-.467-1.09-.519-.143-.052-.247-.078-.35-.078s-.273.04-.417.203c-.144.164-.557.7-.681.844-.125.144-.249.162-.462.054-.213-.108-.901-.332-1.716-1.056-.632-.56-1.059-.942-1.184-1.156-.125-.213-.013-.33-.013-.466s.098-.247.146-.33c.048-.083.104-.143.156-.247s.078-.182.117-.306c.039-.125.019-.232-.007-.33-.026-.098-.35-.845-.48-1.15-.13-.306-.257-.255-.35-.255-.094 0-.203-.013-.31-.013-.106 0-.276.039-.42.203-.144.164-.557.545-.557 1.328 0 .783.57 1.54 1.144 2.26.574.72 1.357 1.258 2.15 1.62.793.36 1.196.485 1.61.45.414-.035 1.05-.43 1.2-.843.15-.413.15-.765.105-.844-.045-.079-.164-.12-.34-.203z"/>
-    </svg>
-    Chat on WhatsApp
-</a>
-            <p>OR</p>
-
-         <a href="https://wa.me/263788840493" target="_blank" class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out">
-    <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 0C5.373 0 0 5.373 0 12c0 3.535 1.402 6.732 3.656 9.055L0 24l4.904-1.29a11.95 11.95 0 007.096 2.308c6.627 0 12-5.373 12-12S18.627 0 12 0zm4.5 16.5c-.24-.096-.947-.467-1.09-.519-.143-.052-.247-.078-.35-.078s-.273.04-.417.203c-.144.164-.557.7-.681.844-.125.144-.249.162-.462.054-.213-.108-.901-.332-1.716-1.056-.632-.56-1.059-.942-1.184-1.156-.125-.213-.013-.33-.013-.466s.098-.247.146-.33c.048-.083.104-.143.156-.247s.078-.182.117-.306c.039-.125.019-.232-.007-.33-.026-.098-.35-.845-.48-1.15-.13-.306-.257-.255-.35-.255-.094 0-.203-.013-.31-.013-.106 0-.276.039-.42.203-.144.164-.557.545-.557 1.328 0 .783.57 1.54 1.144 2.26.574.72 1.357 1.258 2.15 1.62.793.36 1.196.485 1.61.45.414-.035 1.05-.43 1.2-.843.15-.413.15-.765.105-.844-.045-.079-.164-.12-.34-.203z"/>
-    </svg>
-    Chat on WhatsApp
-</a>
+                <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 0C5.373 0 0 5.373 0 12c0 3.535 1.402 6.732 3.656 9.055L0 24l4.904-1.29a11.95 11.95 0 007.096 2.308c6.627 0 12-5.373 12-12S18.627 0 12 0zm4.5 16.5c-.24-.096-.947-.467-1.09-.519-.143-.052-.247-.078-.35-.078s-.273.04-.417.203c-.144.164-.557.7-.681.844-.125.144-.249.162-.462.054-.213-.108-.901-.332-1.716-1.056-.632-.56-1.059-.942-1.184-1.156-.125-.213-.013-.33-.013-.466s.098-.247.146-.33c.048-.083.104-.143.156-.247s.078-.182.117-.306c.039-.125.019-.232-.007-.33-.026-.098-.35-.845-.48-1.15-.13-.306-.257-.255-.35-.255-.094 0-.203-.013-.31-.013-.106 0-.276.039-.42.203-.144.164-.557.545-.557 1.328 0 .783.57 1.54 1.144 2.26.574.72 1.357 1.258 2.15 1.62.793.36 1.196.485 1.61.45.414-.035 1.05-.43 1.2-.843.15-.413.15-.765.105-.844-.045-.079-.164-.12-.34-.203z"/>
+                </svg>
+                Chat on WhatsApp
+            </a>
+            <p class="hidden md:block">OR</p> <!-- Hide on small screens if space is tight -->
+            <!-- WhatsApp Link 2 (Assuming two separate numbers or a redundant link, keeping for now) -->
+            <a href="https://wa.me/263788840493" target="_blank" class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out">
+                <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 0C5.373 0 0 5.373 0 12c0 3.535 1.402 6.732 3.656 9.055L0 24l4.904-1.29a11.95 11.95 0 007.096 2.308c6.627 0 12-5.373 12-12S18.627 0 12 0zm4.5 16.5c-.24-.096-.947-.467-1.09-.519-.143-.052-.247-.078-.35-.078s-.273.04-.417.203c-.144.164-.557.7-.681.844-.125.144-.249.162-.462.054-.213-.108-.901-.332-1.716-1.056-.632-.56-1.059-.942-1.184-1.156-.125-.213-.013-.33-.013-.466s.098-.247.146-.33c.048-.083.104-.143.156-.247s.078-.182.117-.306c.039-.125.019-.232-.007-.33-.026-.098-.35-.845-.48-1.15-.13-.306-.257-.255-.35-.255-.094 0-.203-.013-.31-.013-.106 0-.276.039-.42.203-.144.164-.557.545-.557 1.328 0 .783.57 1.54 1.144 2.26.574.72 1.357 1.258 2.15 1.62.793.36 1.196.485 1.61.45.414-.035 1.05-.43 1.2-.843.15-.413.15-.765.105-.844-.045-.079-.164-.12-.34-.203z"/>
+                </svg>
+                Chat on WhatsApp
+            </a>
         </div>
     </section>
 
     <!-- Footer Section -->
     <footer class="bg-neutral-800 text-white py-8 px-6 md:px-12 text-center rounded-t-xl mt-4">
         <div class="container mx-auto">
-            
             <p class="mt-2">Empowering you to shine!</p>
         </div>
     </footer>
 
+    <script>
+        // --- Product Data (Centralized for easy management) ---
+        // Ensuring these paths match your actual local image files
+        const products = [
+            { id: 1, name: 'Lip Liner', price: 3.00, image: 'linerlip.jpeg' },
+            { id: 2, name: 'Lip Balm', price: 5.00, image: 'lipbalm.jpeg' },
+            { id: 3, name: 'Peach-mallow Gloss', price: 5.00, image: 'peachmallowgloss.jpeg' },
+            { id: 4, name: 'Lip Glaze Gloss', price: 7.00, image: 'lipglazegloss.jpeg' },
+            { id: 5, name: 'Calm Smooth Gloss', price: 7.00, image: 'calmsmoothgloss.jpeg' },
+            { id: 6, name: 'Duo Lipkit: Soft Cookie', price: 9.00, image: 'duolipkit.jpeg' },
+        ];
+
+        // --- Cart State ---
+        let cart = []; // Stores items in the format: { productId, name, price, quantity, image }
+
+        // --- DOM Elements ---
+        const cartIcon = document.getElementById('cart-icon');
+        const cartCountSpan = document.getElementById('cart-count');
+        const cartSidebar = document.getElementById('cart-sidebar');
+        const closeCartBtn = document.getElementById('close-cart-btn');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartTotalSpan = document.getElementById('cart-total');
+        const emptyCartMessage = document.getElementById('empty-cart-message');
+        const messageBox = document.getElementById('message-box');
+        const productCards = document.querySelectorAll('.product-card'); // Select all product cards
+        const checkoutBtn = document.getElementById('checkout-btn'); // Get the checkout button
+
+        // --- Functions ---
+
+        /**
+         * Adds a product to the cart or updates its quantity if already present.
+         * @param {number} productId - The ID of the product to add.
+         * @param {number} quantity - The quantity to add.
+         */
+        function addToCart(productId, quantity) {
+            const product = products.find(p => p.id === productId);
+
+            if (!product) {
+                console.error('Product not found:', productId);
+                return;
+            }
+
+            const existingItem = cart.find(item => item.productId === productId);
+
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({
+                    productId: product.id,
+                    name: product.name,
+                    price: product.price,
+                    quantity: quantity,
+                    image: product.image
+                });
+            }
+
+            renderCart();
+            showMessage(`Added ${quantity}x ${product.name} to cart!`);
+        }
+
+        /**
+         * Updates the quantity of a product in the cart.
+         * If quantity becomes 0 or less, removes the item.
+         * @param {number} productId - The ID of the product to update.
+         * @param {number} newQuantity - The new quantity for the product.
+         */
+        function updateCartQuantity(productId, newQuantity) {
+            const itemIndex = cart.findIndex(item => item.productId === productId);
+
+            if (itemIndex > -1) {
+                if (newQuantity > 0) {
+                    cart[itemIndex].quantity = newQuantity;
+                } else {
+                    cart.splice(itemIndex, 1); // Remove item if quantity is 0 or less
+                }
+                renderCart();
+            }
+        }
+
+        /**
+         * Removes a product from the cart.
+         * @param {number} productId - The ID of the product to remove.
+         */
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.productId !== productId);
+            renderCart();
+            showMessage('Item removed from cart!');
+        }
+
+        /**
+         * Renders (updates) the shopping cart display.
+         */
+        function renderCart() {
+            cartItemsContainer.innerHTML = ''; // Clear current items
+            let total = 0;
+
+            if (cart.length === 0) {
+                emptyCartMessage.style.display = 'block';
+            } else {
+                emptyCartMessage.style.display = 'none';
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+
+                    const cartItemDiv = document.createElement('div');
+                    cartItemDiv.className = 'flex items-center justify-between py-3 border-b border-neutral-200 last:border-b-0';
+                    cartItemDiv.innerHTML = `
+                        <div class="flex items-center space-x-4 flex-grow">
+                            <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-md shadow-sm">
+                            <div>
+                                <h4 class="text-lg font-medium text-neutral-800">${item.name}</h4>
+                                <p class="text-sm text-neutral-600">$${item.price.toFixed(2)} each</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="quantity-btn decrease-qty bg-pink-100 text-pink-600 px-2 py-1 rounded-md hover:bg-pink-200 transition-colors" data-product-id="${item.productId}">-</button>
+                            <span class="text-neutral-800 font-semibold w-8 text-center">${item.quantity}</span>
+                            <button class="quantity-btn increase-qty bg-pink-100 text-pink-600 px-2 py-1 rounded-md hover:bg-pink-200 transition-colors" data-product-id="${item.productId}">+</button>
+                        </div>
+                        <div class="text-right ml-4 flex-shrink-0">
+                            <span class="text-lg font-bold text-pink-700">$${itemTotal.toFixed(2)}</span>
+                            <button class="remove-from-cart-btn text-red-500 hover:text-red-700 ml-3 focus:outline-none" data-product-id="${item.productId}">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                        </div>
+                    `;
+                    cartItemsContainer.appendChild(cartItemDiv);
+                });
+            }
+
+            cartTotalSpan.textContent = `$${total.toFixed(2)}`;
+            cartCountSpan.textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
+
+            // Re-attach event listeners for dynamically created buttons
+            attachCartButtonListeners();
+        }
+
+        /**
+         * Shows a temporary message notification.
+         * @param {string} message - The message to display.
+         */
+        function showMessage(message) {
+            messageBox.textContent = message;
+            messageBox.style.opacity = '1';
+            messageBox.style.pointerEvents = 'auto'; // Make it clickable/visible for accessibility if needed
+            setTimeout(() => {
+                messageBox.style.opacity = '0';
+                messageBox.style.pointerEvents = 'none';
+            }, 2000); // Hide after 2 seconds
+        }
+
+        /**
+         * Attaches event listeners to cart quantity buttons and remove buttons.
+         * This needs to be called after cart items are rendered, as they are dynamic.
+         */
+        function attachCartButtonListeners() {
+            document.querySelectorAll('.increase-qty').forEach(button => {
+                button.onclick = (event) => {
+                    const productId = parseInt(event.currentTarget.dataset.productId);
+                    const item = cart.find(i => i.productId === productId);
+                    if (item) {
+                        updateCartQuantity(productId, item.quantity + 1);
+                    }
+                };
+            });
+
+            document.querySelectorAll('.decrease-qty').forEach(button => {
+                button.onclick = (event) => {
+                    const productId = parseInt(event.currentTarget.dataset.productId);
+                    const item = cart.find(i => i.productId === productId);
+                    if (item) {
+                        updateCartQuantity(productId, item.quantity - 1);
+                    }
+                };
+            });
+
+            document.querySelectorAll('.remove-from-cart-btn').forEach(button => {
+                button.onclick = (event) => {
+                    const productId = parseInt(event.currentTarget.dataset.productId);
+                    removeFromCart(productId);
+                };
+            });
+        }
+
+        /**
+         * Generates and opens a WhatsApp chat with the order details.
+         */
+        function sendOrderToWhatsApp() {
+            if (cart.length === 0) {
+                showMessage('Your cart is empty. Please add items before checking out.');
+                return;
+            }
+
+            const whatsappNumber = '263773107210'; // The target WhatsApp number
+            let message = "Hello BraveGirl! I'd like to place an order for the following items:\n\n";
+            let totalAmount = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                totalAmount += itemTotal;
+                message += `${index + 1}. ${item.name} (Qty: ${item.quantity}) - $${itemTotal.toFixed(2)}\n`;
+            });
+
+            message += `\nTotal: $${totalAmount.toFixed(2)}\n\n`;
+            message += "Please confirm my order. Thank you!";
+
+            // Encode the message for a URL
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+            // Open WhatsApp in a new tab/window
+            window.open(whatsappUrl, '_blank');
+
+            // Optionally, clear the cart after sending the order
+            cart = [];
+            renderCart();
+            showMessage('Order sent to WhatsApp! Thank you for your purchase.');
+            cartSidebar.classList.add('translate-x-full'); // Hide cart sidebar after checkout
+            document.body.style.overflow = '';
+        }
+
+
+        // --- Event Listeners ---
+
+        // Add to Cart buttons on product cards
+        productCards.forEach(card => {
+            const productId = parseInt(card.dataset.productId);
+            const addToCartButton = card.querySelector('.add-to-cart-btn');
+            const quantityInput = card.querySelector('.quantity-input');
+
+            addToCartButton.addEventListener('click', () => {
+                const quantity = parseInt(quantityInput.value);
+                if (quantity > 0) {
+                    addToCart(productId, quantity);
+                } else {
+                    showMessage('Please enter a valid quantity.');
+                }
+            });
+        });
+
+        // Cart icon to open sidebar
+        cartIcon.addEventListener('click', () => {
+            cartSidebar.classList.remove('translate-x-full'); // Show cart
+            cartSidebar.classList.add('translate-x-0');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling body when cart is open
+        });
+
+        // Close cart button
+        closeCartBtn.addEventListener('click', () => {
+            cartSidebar.classList.remove('translate-x-0');
+            cartSidebar.classList.add('translate-x-full'); // Hide cart
+            document.body.style.overflow = ''; // Restore body scrolling
+        });
+
+        // Close cart sidebar when clicking outside (optional, but good UX)
+        document.addEventListener('click', (event) => {
+            if (!cartSidebar.contains(event.target) && !cartIcon.contains(event.target) && !event.target.closest('.product-card')) {
+                if (!cartSidebar.classList.contains('translate-x-full')) {
+                    cartSidebar.classList.remove('translate-x-0');
+                    cartSidebar.classList.add('translate-x-full');
+                    document.body.style.overflow = '';
+                }
+            }
+        });
+
+        // Checkout button
+        checkoutBtn.addEventListener('click', sendOrderToWhatsApp);
+
+        // Initial render of the cart (in case it needs to load from local storage or pre-populate)
+        document.addEventListener('DOMContentLoaded', renderCart); // Ensure renderCart runs after DOM is loaded
+    </script>
 </body>
 </html>
-
